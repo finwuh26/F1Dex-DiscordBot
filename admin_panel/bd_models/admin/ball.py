@@ -29,9 +29,9 @@ class RegimeAdmin(admin.ModelAdmin):
     ) -> tuple[list[Any], dict[str, int], set[Any], list[Any]]:
         regime_ids = [x.pk for x in objs]
         model_count = {
-            "regimes": len(regime_ids),
-            "balls": Ball.objects.filter(regime_id__in=regime_ids).count(),
-            "ball instances": BallInstance.objects.filter(ball__regime_id__in=regime_ids).count(),
+            "constructors": len(regime_ids),
+            "drivers": Ball.objects.filter(regime_id__in=regime_ids).count(),
+            "driver instances": BallInstance.objects.filter(ball__regime_id__in=regime_ids).count(),
             "trade objects": TradeObject.objects.filter(ballinstance__ball__regime_id__in=regime_ids).count(),
         }
 
@@ -53,7 +53,7 @@ class RegimeAdmin(admin.ModelAdmin):
 
         return (
             [
-                "Displaying Ball related objects (instances and trade objects) is too expensive and has been disabled.",
+                "Displaying Driver related objects (instances and trade objects) is too expensive and has been disabled.",
                 *text,
             ],
             model_count,
@@ -78,7 +78,10 @@ class BallAdmin(admin.ModelAdmin):
     readonly_fields = ("collection_image", "spawn_image")
     save_on_top = True
     fieldsets = [
-        (None, {"fields": ["country", "health", "attack", "rarity", "emoji_id", "economy", "regime"]}),
+        (
+            None,
+            {"fields": ["country", "nationality", "car_number", "championships", "health", "attack", "rarity", "emoji_id", "economy", "regime"]},
+        ),
         (
             "Assets",
             {
@@ -87,8 +90,8 @@ class BallAdmin(admin.ModelAdmin):
             },
         ),
         (
-            "Ability",
-            {"description": "The ability of the countryball", "fields": ["capacity_name", "capacity_description"]},
+            "Special Ability",
+            {"description": "The signature ability of the F1 driver", "fields": ["capacity_name", "capacity_description"]},
         ),
         (
             "Advanced",
@@ -100,13 +103,13 @@ class BallAdmin(admin.ModelAdmin):
         ),
     ]
 
-    list_display = ["country", "pk", "emoji", "rarity", "capacity_name", "health", "attack", "enabled"]
+    list_display = ["country", "pk", "emoji", "nationality", "car_number", "championships", "rarity", "capacity_name", "health", "attack", "enabled"]
     list_editable = ["enabled", "rarity"]
     list_filter = ["enabled", "tradeable", "regime", "economy", "created_at"]
     ordering = ["-created_at"]
 
-    search_fields = ["country", "capacity_name", "capacity_description", "catch_names", "translations", "credits", "pk"]
-    search_help_text = "Search for countryball name, ID, ability name/content, credits, catch names or translations"
+    search_fields = ["country", "nationality", "capacity_name", "capacity_description", "catch_names", "translations", "credits", "pk"]
+    search_help_text = "Search for driver name, nationality, ID, ability name/content, credits, catch names or translations"
 
     @admin.display(description="Emoji")
     def emoji(self, obj: Ball):
@@ -128,8 +131,8 @@ class BallAdmin(admin.ModelAdmin):
         if len(instances) < 500:
             return super().get_deleted_objects(objs, request)  # type: ignore
         model_count = {
-            "balls": len(objs),
-            "ball instances": len(instances),
+            "drivers": len(objs),
+            "driver instances": len(instances),
             "trade objects": TradeObject.objects.filter(ballinstance_id__in=instances).count(),
         }
         return ["Too long to display"], model_count, set(), []

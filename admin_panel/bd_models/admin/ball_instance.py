@@ -18,7 +18,7 @@ class SpecialFilter(AutocompleteFilter):
 
 
 class BallFilter(AutocompleteFilter):
-    title = "countryball"
+    title = "driver"
     field_name = "ball"
 
 

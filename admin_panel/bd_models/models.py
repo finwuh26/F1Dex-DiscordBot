@@ -180,7 +180,8 @@ class Economy(models.Model):
     class Meta:
         managed = True
         db_table = "economy"
-        verbose_name_plural = "economies"
+        verbose_name = "Engine Supplier"
+        verbose_name_plural = "Engine Suppliers"
 
     def __str__(self) -> str:
         return self.name
@@ -195,6 +196,8 @@ class Regime(models.Model):
     class Meta:
         managed = True
         db_table = "regime"
+        verbose_name = "Constructor"
+        verbose_name_plural = "Constructors"
 
     def __str__(self) -> str:
         return self.name
@@ -293,7 +296,7 @@ class Ball(models.Model):
         help_text="An alternative shorter name used only when generating the card, if the base name is too long.",
     )
     catch_names = models.TextField(
-        blank=True, null=True, help_text="Additional possible names for catching this ball, separated by semicolons"
+        blank=True, null=True, help_text="Additional possible names for catching this driver, separated by semicolons"
     )
     tradeable = models.BooleanField(help_text="Whether this ball can be traded with others", default=True)
     economy = models.ForeignKey(
@@ -304,6 +307,9 @@ class Ball(models.Model):
     regime_id: int
     created_at = models.DateTimeField(blank=True, null=True, auto_now_add=True, editable=False)
     translations = models.TextField(blank=True, null=True)
+    nationality = models.CharField(max_length=64, blank=True, null=True, help_text="Driver's nationality")
+    car_number = models.IntegerField(blank=True, null=True, help_text="Driver's race car number")
+    championships = models.IntegerField(default=0, help_text="Number of Formula 1 World Championships won")
 
     objects: Manager[Self] = Manager()
     enabled_objects: EnabledManager[Self] = EnabledManager()

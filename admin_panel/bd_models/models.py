@@ -76,7 +76,7 @@ else:
 class GuildConfig(models.Model):
     guild_id = models.BigIntegerField(unique=True, help_text="Discord guild ID")
     spawn_channel = models.BigIntegerField(null=True, help_text="Discord channel ID where balls will spawn")
-    enabled = models.BooleanField(help_text="Whether the bot will spawn countryballs in this guild", default=True)
+    enabled = models.BooleanField(help_text="Whether the bot will spawn collectibles in this guild", default=True)
     silent = models.BooleanField(
         help_text="Whether the responses of guesses get sent as ephemeral or not", default=False
     )
@@ -282,8 +282,8 @@ class Ball(models.Model):
     wild_card = models.ImageField(max_length=200, help_text="Image used when a new ball spawns in the wild")
     collection_card = models.ImageField(max_length=200, help_text="Image used when displaying balls")
     credits = models.CharField(max_length=64, help_text="Author of the collection artwork")
-    capacity_name = models.CharField(max_length=64, help_text="Name of the countryball's capacity")
-    capacity_description = models.CharField(max_length=256, help_text="Description of the countryball's capacity")
+    capacity_name = models.CharField(max_length=64, help_text="Name of the driver's special ability")
+    capacity_description = models.CharField(max_length=256, help_text="Description of the driver's special ability")
     capacity_logic = models.JSONField(help_text="Effect of this capacity", blank=True, default=dict)
     enabled = models.BooleanField(help_text="Enables spawning and show in completion", default=True)
     short_name = models.CharField(
@@ -297,10 +297,10 @@ class Ball(models.Model):
     )
     tradeable = models.BooleanField(help_text="Whether this ball can be traded with others", default=True)
     economy = models.ForeignKey(
-        Economy, on_delete=models.SET_NULL, blank=True, null=True, help_text="Economical regime of this country"
+        Economy, on_delete=models.SET_NULL, blank=True, null=True, help_text="Engine supplier of this driver"
     )
     economy_id: int | None
-    regime = models.ForeignKey(Regime, on_delete=models.CASCADE, help_text="Political regime of this country")
+    regime = models.ForeignKey(Regime, on_delete=models.CASCADE, help_text="Constructor team of this driver")
     regime_id: int
     created_at = models.DateTimeField(blank=True, null=True, auto_now_add=True, editable=False)
     translations = models.TextField(blank=True, null=True)

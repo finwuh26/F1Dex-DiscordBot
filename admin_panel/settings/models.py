@@ -26,12 +26,12 @@ class Settings(models.Model):
     # base settings
     bot_token = models.CharField(help_text="Discord bot token", max_length=80, default="")
     prefix = models.CharField(help_text="Prefix for all text commands", max_length=10, default="b.")
-    collectible_name = models.TextField(help_text="The singular name of your collectible", default="countryball")
-    plural_collectible_name = models.TextField(help_text="The plural name of your collectible", default="countryballs")
-    bot_name = models.TextField(help_text="The name of your bot", default="BallsDex")
+    collectible_name = models.TextField(help_text="The singular name of your collectible", default="driver")
+    plural_collectible_name = models.TextField(help_text="The plural name of your collectible", default="drivers")
+    bot_name = models.TextField(help_text="The name of your bot", default="F1Dex")
     balls_slash_name = models.TextField(
-        help_text='Overrides "/balls" slash command',
-        default="balls",
+        help_text='Overrides "/drivers" slash command',
+        default="drivers",
         validators=(RegexValidator(SLASH_COMMAND_RE, message="Invalid slash command name."),),
     )
     site_base_url = models.URLField(
@@ -83,7 +83,7 @@ class Settings(models.Model):
     show_rarity = models.BooleanField(
         help_text="Whether to show the rarity on the card (replaces economy icon)", default=False
     )
-    catch_button_label = models.CharField(max_length=80, help_text="Label of the catch button", default="Catch me")
+    catch_button_label = models.CharField(max_length=80, help_text="Label of the catch button", default="Catch driver!")
 
     # spawn algorithm details
     spawn_chance_min = models.PositiveIntegerField(
@@ -103,11 +103,11 @@ class Settings(models.Model):
     # /about command
     about_description = models.TextField(
         help_text="A small text bot shown in the /about command.",
-        default="Collect countryballs on Discord, exchange them and battle with friends!",
+        default="Collect F1 drivers on Discord, exchange them and battle with friends!",
     )
     repository = models.URLField(
         help_text="URL to the repository with the source code.",
-        default="https://github.com/Ballsdex-Team/BallsDex-DiscordBot",
+        default="https://github.com/finwuh26/F1Dex-DiscordBot",
     )
     discord_invite = models.URLField(
         help_text="Invite to a Discord server that you own. Shown in /about and to blacklisted users.",
